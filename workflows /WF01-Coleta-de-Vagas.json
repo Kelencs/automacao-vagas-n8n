@@ -1,1 +1,611 @@
-
+{
+  "name": "WF01 - Coleta de Vagas",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "cbfc0975-2684-49da-859d-5d69fa90a54b",
+              "leftValue": "={{ ($json.cargo || '').toLowerCase() }}",
+              "rightValue": "(analista de requisitos|analista de negócios|analista funcional|analista de implantação|analista de sistemas|analista de processos|analista de automação|business analyst|requirements analyst|functional analyst|implementation analyst|implementation consultant|business systems analyst|systems analyst|process analyst|automation analyst|automation specialist|n8n|product owner)",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        1328,
+        272
+      ],
+      "id": "febd513e-b603-428c-8d0d-cd3bb68063d1",
+      "name": "Filtrar Cargos de Interesse"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f01b7f29-bc69-4d5d-9f07-d8b504163452",
+              "leftValue": "={{ ($json.modelo_trabalho || '').toLowerCase() }}",
+              "rightValue": "remoto",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "26a32634-af98-4003-9c18-87adb162327e",
+              "leftValue": "={{ ($json.modelo_trabalho || '').toLowerCase() }}",
+              "rightValue": "não informado",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        1568,
+        272
+      ],
+      "id": "bf35b24d-29f5-4f63-bc48-65a87bdbf3f9",
+      "name": "Filtrar Localização"
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "dedupeValue": "={{ $json.id_email }}",
+        "options": {
+          "scope": "node"
+        }
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        1872,
+        272
+      ],
+      "id": "d61e868d-757f-4527-b926-bded228e3596",
+      "name": "Remover Vagas Duplicadas",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1J2doWBvHxCGhykgFMP_tfdgNVk4P9pc8LvoXZgdK284",
+          "mode": "list",
+          "cachedResultName": "Vagas - Automação n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1J2doWBvHxCGhykgFMP_tfdgNVk4P9pc8LvoXZgdK284/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1J2doWBvHxCGhykgFMP_tfdgNVk4P9pc8LvoXZgdK284/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_email": "={{ $json.id_email }}",
+            "fonte": "={{ $json.fonte }}",
+            "cargo": "={{ $json.cargo }}",
+            "empresa": "={{ $json.empresa }}",
+            "localizacao": "={{ $json.localizacao }}",
+            "modelo_trabalho": "={{ $json.modelo_trabalho }}",
+            "salario": "={{ $json.salario }}",
+            "descrição": "={{ $json.descricao }}",
+            "link": "={{ $json.link }}",
+            "assunto_email": "={{ $json.assunto_email }}",
+            "remetente": "={{ $json.remetente }}",
+            "status": "NOVA",
+            "data_coleta": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_email",
+              "displayName": "id_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fonte",
+              "displayName": "fonte",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cargo",
+              "displayName": "cargo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "empresa",
+              "displayName": "empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "localizacao",
+              "displayName": "localizacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "modelo_trabalho",
+              "displayName": "modelo_trabalho",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo_contrato",
+              "displayName": "tipo_contrato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "salario",
+              "displayName": "salario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "descrição",
+              "displayName": "descrição",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "assunto_email",
+              "displayName": "assunto_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "remetente",
+              "displayName": "remetente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "match",
+              "displayName": "match",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_coleta",
+              "displayName": "data_coleta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2160,
+        272
+      ],
+      "id": "b3c64f70-48bc-48c2-a7ad-d40d962f43fb",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "NTEAPvDVEF6KiVeJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "labelIds": [
+            "Label_6312034227526019761"
+          ],
+          "q": ""
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        384,
+        272
+      ],
+      "id": "cdcb6d39-80c2-4c34-a6d5-d12742f96c1f",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1TQQesnseD8tXyMO",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        272
+      ],
+      "id": "20725a15-4d2c-4980-82a4-49e952ed9e8a",
+      "name": "Get a message",
+      "webhookId": "a8b2149d-dff4-4057-876a-67bc135d49df",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1TQQesnseD8tXyMO",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const html =\n  $json.html ||\n  $json.textHtml ||\n  $json.bodyHtml ||\n  '';\n\n// ======================================================\n// FUNÇÃO PARA PEGAR HEADERS EM FORMATOS DIFERENTES\n// ======================================================\n\nfunction getHeader(nome) {\n  const headers = $json.headers || {};\n\n  const lower = nome.toLowerCase();\n  const normal =\n    nome.charAt(0).toUpperCase() +\n    nome.slice(1).toLowerCase();\n\n  const valor =\n    headers[lower] ||\n    headers[nome] ||\n    headers[normal] ||\n    $json[nome] ||\n    $json[normal] ||\n    '';\n\n  return String(valor)\n    .replace(new RegExp(`^${nome}:\\\\s*`, 'i'), '')\n    .trim();\n}\n\nconst subject = getHeader('subject');\nconst from = getHeader('from');\n\n// ======================================================\n// LIMPAR HTML\n// ======================================================\n\nconst texto = html\n  .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n  .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n  .replace(/<[^>]+>/g, ' ')\n  .replace(/&nbsp;/gi, ' ')\n  .replace(/&amp;/gi, '&')\n  .replace(/&quot;/gi, '\"')\n  .replace(/&#39;/gi, \"'\")\n  .replace(/&ndash;/gi, '–')\n  .replace(/&mdash;/gi, '—')\n  .replace(/&#8211;/gi, '–')\n  .replace(/&#8212;/gi, '—')\n  .replace(/\\s+/g, ' ')\n  .trim();\n\n// ======================================================\n// IDENTIFICAR FONTE\n// ======================================================\n\nconst origem = `${from} ${subject}`.toLowerCase();\n\nlet fonte = 'Outra';\n\nif (\n  origem.includes('indeed') ||\n  html.toLowerCase().includes('indeed.com')\n) {\n  fonte = 'Indeed';\n} else if (\n  origem.includes('linkedin') ||\n  html.toLowerCase().includes('linkedin.com')\n) {\n  fonte = 'LinkedIn';\n} else if (\n  origem.includes('gupy') ||\n  html.toLowerCase().includes('gupy')\n) {\n  fonte = 'Gupy';\n}\n\n// ======================================================\n// VALORES PADRÃO\n// ======================================================\n\nlet cargo = 'Não informado';\nlet empresa = 'Não informado';\nlet localizacao = 'Não informado';\nlet modeloTrabalho = 'Não informado';\nlet tipoContrato = 'Não informado';\nlet salario = 'Não informado';\nlet descricao = 'Não informado';\nlet link = 'Não informado';\n\n// ======================================================\n// INDEED\n// ======================================================\n\nif (fonte === 'Indeed') {\n\n  // ----------------------------------------------------\n  // CARGO + EMPRESA PELO ASSUNTO\n  //\n  // Exemplos:\n  // Analista QA Junior na empresa Konnex\n  // Product Owner | SegImob na empresa Seg Imob...\n  // ----------------------------------------------------\n\n  const matchAssunto = subject.match(\n    /^(.+?)\\s+na empresa\\s+(.+)$/i\n  );\n\n  if (matchAssunto) {\n    cargo = matchAssunto[1].trim();\n    empresa = matchAssunto[2].trim();\n  }\n\n  // ----------------------------------------------------\n  // FALLBACK: tentar pelo conteúdo HTML\n  // ----------------------------------------------------\n\n  if (cargo === 'Não informado') {\n\n    const h1 = html.match(\n      /<h1[^>]*>(.*?)<\\/h1>/i\n    );\n\n    if (h1) {\n      const h1Limpo = h1[1]\n        .replace(/<[^>]+>/g, ' ')\n        .replace(/\\s+/g, ' ')\n        .trim();\n\n      const matchH1 = h1Limpo.match(\n        /^(.+?)\\s+na empresa\\s+(.+)$/i\n      );\n\n      if (matchH1) {\n        cargo = matchH1[1].trim();\n        empresa = matchH1[2].trim();\n      }\n    }\n  }\n\n  // ----------------------------------------------------\n  // MODELO DE TRABALHO\n  // ----------------------------------------------------\n\n  if (/\\bremoto\\b|\\bremote\\b/i.test(texto)) {\n    modeloTrabalho = 'Remoto';\n  } else if (\n    /\\bhíbrido\\b|\\bhibrido\\b|\\bhybrid\\b/i.test(texto)\n  ) {\n    modeloTrabalho = 'Híbrido';\n  } else if (\n    /\\bpresencial\\b|\\bon-site\\b|\\bonsite\\b/i.test(texto)\n  ) {\n    modeloTrabalho = 'Presencial';\n  }\n\n  // ----------------------------------------------------\n  // LOCALIZAÇÃO\n  // ----------------------------------------------------\n\n  // Se só conseguimos confirmar remoto\n  if (modeloTrabalho === 'Remoto') {\n    localizacao = 'Remoto';\n  }\n\n  // ----------------------------------------------------\n  // TIPO DE VAGA\n  // Procura especificamente a seção \"Tipo de vaga\"\n  // ----------------------------------------------------\n\n  const tipoMatch = texto.match(\n    /Tipo de vaga\\s+(.+?)(?:Pré-visualização|Descrição da vaga|Sobre a vaga|Salário|Saiba mais)/i\n  );\n\n  if (tipoMatch) {\n    const tipoTexto = tipoMatch[1];\n\n    if (/tempo integral/i.test(tipoTexto)) {\n      tipoContrato = 'Tempo integral';\n    } else if (/meio período|meio periodo/i.test(tipoTexto)) {\n      tipoContrato = 'Meio período';\n    } else if (/\\bPJ\\b/i.test(tipoTexto)) {\n      tipoContrato = 'PJ';\n    } else if (/contrato/i.test(tipoTexto)) {\n      tipoContrato = 'Contrato';\n    }\n  } else {\n    // fallback\n    if (/tempo integral/i.test(texto)) {\n      tipoContrato = 'Tempo integral';\n    }\n  }\n\n  // ----------------------------------------------------\n  // SALÁRIO DA VAGA\n  //\n  // Procuramos salário próximo da seção \"Tipo de vaga\"\n  // para evitar pegar o salário mínimo do perfil.\n  // ----------------------------------------------------\n\n  const salarioMatch = texto.match(\n    /Salário\\s+(R\\$\\s*[\\d.,]+(?:\\s*[–-]\\s*R\\$\\s*[\\d.,]+)?\\s*por\\s+(?:mês|mes|hora|ano))\\s+Tipo de vaga/i\n  );\n\n  if (salarioMatch) {\n    salario = salarioMatch[1].trim();\n  }\n\n  // ----------------------------------------------------\n  // DESCRIÇÃO\n  // Aceita vários formatos de template do Indeed\n  // ----------------------------------------------------\n\n  const padroesDescricao = [\n    /Pré-visualização da descrição da vaga\\s+(.+?)(?:Saiba mais|Quer receber mais vagas|Mantenha seu perfil)/i,\n\n    /Descrição da vaga\\s+(.+?)(?:Saiba mais|Quer receber mais vagas|Mantenha seu perfil)/i,\n\n    /Sobre a vaga\\s+(.+?)(?:Saiba mais|Quer receber mais vagas|Mantenha seu perfil)/i\n  ];\n\n  for (const padrao of padroesDescricao) {\n    const match = texto.match(padrao);\n\n    if (match) {\n      descricao = match[1]\n        .replace(/\\s+/g, ' ')\n        .trim();\n\n      break;\n    }\n  }\n\n  // ----------------------------------------------------\n  // LINK DA VAGA\n  // ----------------------------------------------------\n\n  const links = [\n    ...html.matchAll(/href=[\"']([^\"']+)[\"']/gi)\n  ]\n    .map(m =>\n      m[1].replace(/&amp;/g, '&')\n    )\n    .filter(l =>\n      l.startsWith('http')\n    );\n\n  const linksUnicos = [...new Set(links)];\n\n  // Primeiro tenta encontrar CTA específico da vaga\n  const linkCTA = html.match(\n    /<a[^>]+href=[\"']([^\"']+)[\"'][^>]*(?:aria-label=[\"'][^\"']*job[^\"']*[\"'])/i\n  );\n\n  if (linkCTA) {\n    link = linkCTA[1].replace(/&amp;/g, '&');\n  } else {\n    const indeedLink = linksUnicos.find(l =>\n      l.toLowerCase().includes('indeed.com')\n    );\n\n    if (indeedLink) {\n      link = indeedLink;\n    }\n  }\n}\n\n// ======================================================\n// LINKEDIN / GUPY\n//\n// Por enquanto preservamos o conteúdo para criarmos\n// parsers específicos quando testarmos e-mails reais.\n// ======================================================\n\nif (\n  fonte === 'LinkedIn' ||\n  fonte === 'Gupy'\n) {\n\n  // tenta cargo + empresa pelo assunto quando possível\n  const padroes = [\n    /^(.+?)\\s+na empresa\\s+(.+)$/i,\n    /^(.+?)\\s+at\\s+(.+)$/i\n  ];\n\n  for (const padrao of padroes) {\n    const match = subject.match(padrao);\n\n    if (match) {\n      cargo = match[1].trim();\n      empresa = match[2].trim();\n      break;\n    }\n  }\n\n  if (/\\bremoto\\b|\\bremote\\b/i.test(texto)) {\n    modeloTrabalho = 'Remoto';\n    localizacao = 'Remoto';\n  } else if (\n    /\\bhíbrido\\b|\\bhibrido\\b|\\bhybrid\\b/i.test(texto)\n  ) {\n    modeloTrabalho = 'Híbrido';\n  } else if (\n    /\\bpresencial\\b|\\bon-site\\b|\\bonsite\\b/i.test(texto)\n  ) {\n    modeloTrabalho = 'Presencial';\n  }\n\n  const links = [\n    ...html.matchAll(/href=[\"']([^\"']+)[\"']/gi)\n  ]\n    .map(m =>\n      m[1].replace(/&amp;/g, '&')\n    )\n    .filter(l =>\n      l.startsWith('http')\n    );\n\n  const dominio =\n    fonte === 'LinkedIn'\n      ? 'linkedin'\n      : 'gupy';\n\n  const encontrado = links.find(l =>\n    l.toLowerCase().includes(dominio)\n  );\n\n  if (encontrado) {\n    link = encontrado;\n  }\n}\n\n// ======================================================\n// SAÍDA\n// ======================================================\n\nreturn {\n  json: {\n    id_email: $json.id,\n\n    fonte,\n\n    cargo,\n    empresa,\n\n    localizacao,\n    modelo_trabalho: modeloTrabalho,\n    tipo_contrato: tipoContrato,\n\n    salario,\n\n    // padronizado SEM ACENTO\n    descricao,\n\n    link,\n\n    assunto_email: subject,\n    remetente: from,\n\n    // útil como fallback no WF02\n    texto_email: texto,\n\n    status: 'NOVA'\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        272
+      ],
+      "id": "17f13e53-6f6f-4df5-b7cf-6c11c1d1bec5",
+      "name": "Extrair Dados da Vaga"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.fonte }}",
+                    "rightValue": "Indeed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ca3b1102-d2ef-4628-9ab7-f70ab772f035"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Indeed"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "79546137-c83d-4fec-8e0a-6b6896513bc3",
+                    "leftValue": "{{ $json.fonte }}",
+                    "rightValue": "LinkedIn",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "LinkedIn"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cf8f65cb-f949-45f7-8f10-3d74611f4a4f",
+                    "leftValue": "{{ $json.fonte }}",
+                    "rightValue": "Gupy",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Gupy"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1056,
+        272
+      ],
+      "id": "9a9da87b-d541-48f6-8ec1-5de3493dec77",
+      "name": "Identificar Fonte da Vaga"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "eqBGo3dRfSrHiXgd",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/eqBGo3dRfSrHiXgd",
+          "cachedResultName": "WF02 - Análise e Match com Currículo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        2400,
+        272
+      ],
+      "id": "fb9525ef-9f15-4ee5-a6a6-1674d441cdb4",
+      "name": "Call 'WF02 - Análise e Match com Currículo'"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Filtrar Cargos de Interesse": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Localização",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Localização": {
+      "main": [
+        [
+          {
+            "node": "Remover Vagas Duplicadas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remover Vagas Duplicadas": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados da Vaga",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados da Vaga": {
+      "main": [
+        [
+          {
+            "node": "Identificar Fonte da Vaga",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identificar Fonte da Vaga": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Cargos de Interesse",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filtrar Cargos de Interesse",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filtrar Cargos de Interesse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Call 'WF02 - Análise e Match com Currículo'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5589ba30-1eda-448e-a469-2c5138159a35",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "39c46ce4c07757018a1ecb77e8a7a7250b082844027ab0f32c16f8174d82e866"
+  },
+  "nodeGroups": [],
+  "id": "teFJ9EamugKYqk3U",
+  "tags": []
+}
