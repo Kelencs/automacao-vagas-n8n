@@ -1,58 +1,146 @@
-# Requisitos Não Funcionais
-
-## RNF-001 — Segurança
-
-Credenciais, tokens e chaves de API não devem ser armazenados em texto aberto no repositório.
-
-## RNF-002 — Privacidade
-
-Dados pessoais do currículo devem ser minimizados no processamento e não devem ser publicados em repositório público.
-
-## RNF-003 — Rastreabilidade
-
-Cada vaga deve possuir um identificador que permita rastrear sua origem e processamento.
-
-## RNF-004 — Manutenibilidade
-
-A solução deve ser separada em workflows independentes para coleta, análise e notificação.
-
-## RNF-005 — Auditabilidade
-
-O cálculo do match deve ser realizado por regra determinística e não diretamente pela IA.
-
-## RNF-006 — Clareza de falhas
-
-Erros de integração devem ser identificáveis por node no histórico de execuções do n8n.
-
-## RNF-007 — Extensibilidade
-
-A arquitetura deve permitir inclusão de novas fontes de vagas.
-
-## RNF-008 — Consistência
-
-Campos padronizados devem utilizar nomes estáveis, preferencialmente sem acentos em chaves técnicas.
-
-Exemplo:
-
-```text
-descricao
-modelo_trabalho
-tipo_contrato
-```
-
-## RNF-009 — Tolerância a dados incompletos
-
-O sistema deve continuar o processamento quando campos não essenciais estiverem ausentes.
-
-## RNF-010 — Desempenho
-
-O processamento de uma vaga deve ocorrer sem intervenção manual, exceto em casos de falha ou alteração de template.
-
-## RNF-011 — Transparência
-
-O sistema deve deixar claro que o match é uma estimativa interna e não uma probabilidade real de contratação.
-
-## RNF-012 — Decisão humana
-
-A decisão final sobre candidatura deve permanecer com o usuário.
-
+{
+  "name": "WF03 - Notificação de Vagas",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dcc23ed5-34d4-48b0-bf32-4bd466bfa55c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bf4ac55b-5d35-40da-af9b-9bd0bcf1c6c6",
+              "leftValue": "={{ Number($json.match) }}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f11af542-1cfd-45df-869d-1853d82923ad",
+      "name": "Match Mínimo para Notificação"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "00d57cad-240b-4006-86ab-a35622333f63",
+              "name": "mensagem",
+              "value": "={{ `🚀 NOVA VAGA COM ALTO MATCH\n\n💼 Cargo: ${$json.cargo || \"Não informado\"}\n🏢 Empresa: ${$json.empresa || \"Não informado\"}\n📍 Modelo: ${$json.modelo_trabalho || \"Não informado\"}\n\n📊 Match: ${$json.match || 0}%\n\n✅ Pontos fortes:\n${$json.pontos_fortes || \"Não informado\"}\n\n⚠️ Lacunas:\n${$json.lacunas || \"Nenhuma lacuna relevante identificada\"}\n\n📝 Análise:\n${$json.justificativa || $json.justificativa_resumida || \"Não informado\"}\n\n🔗 Ver vaga:\n${$json.link || \"Link não informado\"}` }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        -96
+      ],
+      "id": "5aa4d6a9-b6c6-4356-b2a7-eb29a86c8deb",
+      "name": "Montar Mensagem Telegram"
+    },
+    {
+      "parameters": {
+        "chatId": "1185127589",
+        "text": "={{ $json.mensagem }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        -96
+      ],
+      "id": "89b854fe-fcbb-425d-aa4e-061f8b32a91f",
+      "name": "Send a text message",
+      "webhookId": "696a6637-27b4-4334-8cd3-045f434f817e",
+      "credentials": {
+        "telegramApi": {
+          "id": "B3GRZ3uYuK4CkHfI",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Match Mínimo para Notificação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Match Mínimo para Notificação": {
+      "main": [
+        [
+          {
+            "node": "Montar Mensagem Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Mensagem Telegram": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8f6a66e7-04a4-4fa8-80e7-2d5e853dc08b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "39c46ce4c07757018a1ecb77e8a7a7250b082844027ab0f32c16f8174d82e866"
+  },
+  "nodeGroups": [],
+  "id": "5S1thogI0fzo5qad",
+  "tags": []
+}
