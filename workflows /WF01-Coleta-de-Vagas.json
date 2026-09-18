@@ -92,8 +92,7 @@
         272
       ],
       "id": "d61e868d-757f-4527-b926-bded228e3596",
-      "name": "Remover Vagas Duplicadas",
-      "disabled": true
+      "name": "Remover Vagas Duplicadas"
     },
     {
       "parameters": {
@@ -600,7 +599,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "5589ba30-1eda-448e-a469-2c5138159a35",
+  "versionId": "efa41e85-90f7-4aab-890c-601bb8fe11dd",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "39c46ce4c07757018a1ecb77e8a7a7250b082844027ab0f32c16f8174d82e866"
