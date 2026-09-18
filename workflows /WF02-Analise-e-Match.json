@@ -1,1 +1,563 @@
-
+{
+  "name": "WF02 - Análise e Match com Currículo",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "878509b3-87e0-4973-b89c-53706b2b16ee",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "079edd90-5f5b-4743-abf2-2897a4afd731",
+              "name": "curriculo",
+              "value": "KELEN CRISTINA SILVA  PERFIL PROFISSIONAL  Profissional de tecnologia com cerca de 5 anos de experiência em análise de requisitos, evolução de produtos digitais e atuação na interface entre áreas de negócio e equipes técnicas.  Experiência com levantamento de necessidades, regras de negócio, documentação funcional, requisitos funcionais e não funcionais, histórias de usuário, critérios de aceite, testes funcionais, homologação, análise de incidentes, análise de logs, consultas a banco de dados e diagnóstico de falhas.  Atualmente direcionando o desenvolvimento profissional para Inteligência Artificial generativa, automação de processos e integrações, com experiência prática em n8n, APIs REST e Google Gemini.  COMPETÊNCIAS TÉCNICAS  Análise de Requisitos e Negócios: - Levantamento e detalhamento de requisitos - Requisitos funcionais e não funcionais - Histórias de usuário - Critérios de aceite - Regras de negócio - Refinamento de backlog - Documentação funcional - Interface entre negócio e desenvolvimento - Levantamento de necessidades com clientes e Product Owners  Qualidade e Sustentação: - Testes funcionais - Homologação - Validação de entregas - Análise de chamados e incidentes - Análise de logs - Simulação e reprodução de erros - Identificação de causa raiz - Diagnóstico de falhas - Consultas a banco de dados  IA E AUTOMAÇÃO: - n8n - Automação de processos - Inteligência Artificial generativa - Google Gemini - Interpretação de linguagem natural - Classificação de intenção - Integração de APIs REST - Integração de sistemas  Ferramentas e Métodos: - Jira - Azure DevOps - Confluence - Scrum - Metodologias ágeis. PROJETO DE PORTFÓLIO — BEAUTYFLOW AI  Projeto envolvendo IA aplicada, automação e produtos digitais.  Atividades: - Construção e evolução de fluxos de automação com n8n. - Integração de APIs. - Uso de Google Gemini para interpretação de linguagem natural e classificação de intenção. - Aplicação de análise de requisitos, regras de negócio, testes e validação dos fluxos automatizados. - Documentação de processos e comportamento esperado das soluções. - Conexão entre necessidades de negócio e implementação técnica.  EXPERIÊNCIA PROFISSIONAL  STEFANINI BRASIL / CERTSYS Analista de Requisitos de Negócios Abril/2022 a Setembro/2025  - Levantamento e detalhamento de requisitos junto a clientes e Product Owners. - Elaboração de requisitos funcionais, histórias de usuário, regras de negócio e critérios de aceite. - Atuação como ponte entre negócio e desenvolvimento. - Sustentação e evolução de sistemas. - Análise de chamados, incidentes e logs. - Consultas a banco de dados. - Simulação de erros e identificação de causa raiz. - Direcionamento de correções. - Testes funcionais, homologação e validação das entregas.  CEDRO TECHNOLOGIES Analista de Requisitos Dezembro/2021 a Abril/2022  - Atuação em produtos digitais do mercado financeiro. - Análise e documentação de requisitos funcionais e não funcionais. - Uso do Confluence para documentação. - Refinamento de backlog. - Criação de histórias de usuário, regras de negócio e critérios de aceite. - Acompanhamento das entregas no Jira. - Participação em cerimônias ágeis. - Participação no desenvolvimento de backend de checkout de pagamento com cartão. - Apoio ao levantamento de requisitos, regras de negócio, acompanhamento pelo Azure DevOps e validação funcional.  FMX SOLUÇÕES EM TECNOLOGIA Analista de Requisitos Janeiro/2021 a Dezembro/2021  - Atuação em produto digital para plataforma de compra e venda de imóveis. - Tradução de necessidades de stakeholders em funcionalidades, fluxos e documentação funcional. - Criação e validação de fluxos de navegação. - Definição de requisitos de telas. - Apoio à experiência do usuário. - Acompanhamento de testes junto ao QA.  FORMAÇÃO  Ciência de Dados e Inteligência Artificial Faculdade Única 2026 a 2027 — cursando  Análise e Desenvolvimento de Sistemas Centro Universitário Presidente Antônio Carlos — UNIPAC 2017 a 2020  CERTIFICAÇÃO  PSPO I — Professional Scrum Product Owner Scrum.org",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "dc3652bf-42f6-4f23-9979-2364af005d28",
+      "name": "Adicionar Currículo"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ `\nVocê é um analista especializado em recrutamento, análise de requisitos e comparação objetiva entre vagas e currículos.\n\nSua tarefa é analisar a vaga recebida e comparar seus requisitos exclusivamente com as informações existentes no currículo fornecido.\n\nNão decida se o candidato deve se candidatar.\nNão calcule percentual de compatibilidade.\nNão invente informações.\nO percentual de match será calculado posteriormente pelo n8n.\n\n==================================================\nDADOS DA VAGA\n==================================================\n\nFonte:\n${$json.fonte || \"Não informado\"}\n\nCargo:\n${$json.cargo || \"Não informado\"}\n\nEmpresa:\n${$json.empresa || \"Não informado\"}\n\nLocalização:\n${$json.localizacao || \"Não informado\"}\n\nModelo de trabalho:\n${$json.modelo_trabalho || \"Não informado\"}\n\nTipo de contrato:\n${$json.tipo_contrato || \"Não informado\"}\n\nSalário:\n${$json.salario || \"Não informado\"}\n\nDESCRIÇÃO DA VAGA:\n\n${$json[\"descrição\"] || $json.descricao || $json.texto_email || \"Não informado\"}\n\n==================================================\nCURRÍCULO DO CANDIDATO\n==================================================\n\n${$json.curriculo || \"Currículo não informado\"}\n\n==================================================\nOBJETIVO\n==================================================\n\n1. Leia a descrição da vaga.\n\n2. Identifique os principais:\n- requisitos;\n- experiências;\n- competências;\n- conhecimentos;\n- ferramentas;\n- tecnologias;\n- qualificações;\n- responsabilidades que impliquem claramente uma competência necessária.\n\n3. Compare cada requisito identificado exclusivamente com as evidências presentes no currículo.\n\n4. Não use conhecimentos externos sobre a empresa, cargo ou candidato.\n\n==================================================\nREGRAS PARA IDENTIFICAR REQUISITOS\n==================================================\n\nAnalise somente o que estiver disponível na descrição da vaga.\n\nNão invente requisitos.\n\nNão transforme uma informação genérica em uma tecnologia específica.\n\nExemplo:\n\nSe a vaga mencionar apenas \"banco de dados\", não considere automaticamente PostgreSQL, Oracle, MySQL ou SQL Server.\n\nSe a vaga mencionar \"automação\", não considere automaticamente experiência com n8n, a menos que n8n esteja explicitamente solicitado.\n\nEvite criar vários requisitos que representam praticamente a mesma competência.\n\nIdentifique no máximo 12 requisitos principais.\n\n==================================================\nTIPO DO REQUISITO\n==================================================\n\nPara cada requisito, use somente um dos valores:\n\nOBRIGATORIO\nDESEJAVEL\nNAO_INFORMADO\n\nUse OBRIGATORIO somente quando a vaga deixar claramente indicado que o requisito é necessário, obrigatório, indispensável ou equivalente.\n\nExemplos:\n- obrigatório;\n- necessário;\n- indispensável;\n- precisa ter;\n- requisito;\n- experiência necessária;\n- required;\n- must have.\n\nUse DESEJAVEL quando a vaga indicar:\n\n- desejável;\n- diferencial;\n- será um diferencial;\n- será um plus;\n- preferred;\n- nice to have.\n\nQuando a vaga não deixar claro se é obrigatório ou desejável, use:\n\nNAO_INFORMADO\n\n==================================================\nCOMPARAÇÃO COM O CURRÍCULO\n==================================================\n\nPara cada requisito identificado, procure evidências exclusivamente no currículo.\n\nUse somente um destes status:\n\nATENDIDO\nPARCIALMENTE_ATENDIDO\nNAO_ENCONTRADO\n\nUse ATENDIDO quando existir evidência clara e suficiente no currículo.\n\nUse PARCIALMENTE_ATENDIDO quando existir experiência ou conhecimento relacionado, mas não houver evidência suficiente para confirmar atendimento completo.\n\nUse NAO_ENCONTRADO quando não existir evidência correspondente no currículo.\n\n==================================================\nREGRAS DE EVIDÊNCIA\n==================================================\n\nNão invente experiências.\n\nNão invente competências.\n\nNão invente certificações.\n\nNão invente conhecimentos técnicos.\n\nNão invente ferramentas utilizadas.\n\nNão considere palavras semelhantes como evidência suficiente.\n\nNão considere conhecimento em estudo como experiência profissional consolidada.\n\nExemplo:\n\nSe a vaga exigir experiência profissional com Python e o currículo disser apenas:\n\n\"Python - fundamentos em estudo\"\n\nnão classifique automaticamente como ATENDIDO.\n\nAvalie como PARCIALMENTE_ATENDIDO ou NAO_ENCONTRADO de acordo com o nível exigido pela vaga.\n\nOutro exemplo:\n\nSe a vaga exigir PostgreSQL e o currículo informar somente:\n\n\"consultas a banco de dados\"\n\nnão considere PostgreSQL como comprovado.\n\nNesse caso pode existir relação parcial, mas não evidência da tecnologia específica.\n\n==================================================\nEVIDENCIA_CURRICULO\n==================================================\n\nPara cada requisito, apresente uma evidência curta e objetiva do currículo.\n\nA evidência deve ter no máximo 180 caracteres.\n\nNão copie parágrafos grandes do currículo.\n\nQuando não houver evidência, utilize exatamente:\n\n\"Não encontrada no currículo\"\n\n==================================================\nPONTOS FORTES\n==================================================\n\nListe no máximo 5 pontos fortes.\n\nInclua somente experiências ou competências do currículo diretamente relacionadas à vaga.\n\nNão inclua pontos genéricos que não tenham relação com a oportunidade analisada.\n\n==================================================\nLACUNAS\n==================================================\n\nListe no máximo 5 lacunas relevantes.\n\nConsidere principalmente:\n\n- requisitos classificados como NAO_ENCONTRADO;\n- requisitos importantes classificados como PARCIALMENTE_ATENDIDO.\n\nNão invente lacunas que não sejam baseadas na descrição da vaga.\n\n==================================================\nJUSTIFICATIVA\n==================================================\n\nCrie uma justificativa objetiva com no máximo 500 caracteres.\n\nExplique resumidamente:\n\n- quais fatores aproximam o currículo da vaga;\n- quais requisitos possuem boas evidências;\n- quais são as principais lacunas.\n\nNão informe porcentagem.\n\nNão diga que o candidato deve ou não deve se candidatar.\n\n==================================================\nREGRAS DE CONCISÃO\n==================================================\n\n- No máximo 12 requisitos.\n- Não repita requisitos equivalentes.\n- Requisitos devem ser descritos de forma curta.\n- Evidências devem ter no máximo 180 caracteres.\n- Pontos fortes: máximo 5.\n- Lacunas: máximo 5.\n- Justificativa: máximo 500 caracteres.\n- Não escreva análises longas.\n- Não copie grandes trechos da vaga ou do currículo.\n\n==================================================\nFORMATO DE SAÍDA OBRIGATÓRIO\n==================================================\n\nRetorne SOMENTE JSON válido.\n\nNão utilize Markdown.\nNão utilize blocos de código.\nNão utilize três crases.\nNão escreva \"json\" antes da resposta.\nNão escreva explicações antes do JSON.\nNão escreva explicações depois do JSON.\nNão crie uma propriedade chamada \"output\".\nNão envolva o resultado dentro de outro objeto.\n\nA raiz deve possuir diretamente:\n\nrequisitos\npontos_fortes\nlacunas\njustificativa_resumida\n\nUse exatamente esta estrutura:\n\n{\n  \"requisitos\": [\n    {\n      \"requisito\": \"Descrição curta do requisito\",\n      \"tipo\": \"NAO_INFORMADO\",\n      \"status\": \"ATENDIDO\",\n      \"evidencia_curriculo\": \"Evidência curta encontrada no currículo\"\n    }\n  ],\n  \"pontos_fortes\": [\n    \"Ponto forte diretamente relacionado à vaga\"\n  ],\n  \"lacunas\": [\n    \"Lacuna identificada na comparação\"\n  ],\n  \"justificativa_resumida\": \"Resumo objetivo da comparação.\"\n}\n\nOs únicos valores permitidos para tipo são:\n\nOBRIGATORIO\nDESEJAVEL\nNAO_INFORMADO\n\nOs únicos valores permitidos para status são:\n\nATENDIDO\nPARCIALMENTE_ATENDIDO\nNAO_ENCONTRADO\n\n==================================================\nCASO SEM DESCRIÇÃO\n==================================================\n\nSomente se DESCRIÇÃO DA VAGA estiver realmente vazia ou igual a \"Não informado\", retorne:\n\n{\n  \"requisitos\": [],\n  \"pontos_fortes\": [],\n  \"lacunas\": [],\n  \"justificativa_resumida\": \"Descrição da vaga não disponível para análise.\"\n}\n\n==================================================\nVALIDAÇÃO FINAL\n==================================================\n\nAntes de responder:\n\n1. Confirme que a resposta é JSON válido.\n2. Confirme que todas as aspas, colchetes e chaves estão fechados.\n3. Confirme que requisitos é uma lista.\n4. Confirme que pontos_fortes é uma lista.\n5. Confirme que lacunas é uma lista.\n6. Confirme que justificativa_resumida é texto.\n7. Confirme que cada requisito possui:\n   requisito,\n   tipo,\n   status,\n   evidencia_curriculo.\n8. Não calcule match.\n9. Não inclua informações que não estejam na vaga ou no currículo.\n10. Retorne apenas o JSON.\n` }}",
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        448,
+        0
+      ],
+      "id": "85fbf719-bb38-433a-8b1c-b27ca59082db",
+      "name": "Analisar Vaga x Currículo"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {
+          "maxOutputTokens": 8192,
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        208
+      ],
+      "id": "af0bea6e-ce1a-4a03-bdbf-e03da7c2b92d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Tenta localizar a resposta produzida pelo LLM\nlet raw =\n  $json.text ??\n  $json.output ??\n  $json.response ??\n  $json;\n\n// Se vier como texto, limpa markdown e transforma em objeto\nif (typeof raw === 'string') {\n\n  raw = raw\n    .replace(/```json/gi, '')\n    .replace(/```/g, '')\n    .trim();\n\n  try {\n    raw = JSON.parse(raw);\n  } catch (error) {\n    throw new Error(\n      'A resposta da IA não é um JSON válido. Resposta recebida: ' + raw\n    );\n  }\n}\n\n// Alguns modelos podem devolver:\n// { \"output\": { ... } }\nif (raw.output && typeof raw.output === 'object') {\n  raw = raw.output;\n}\n\nconst requisitos = Array.isArray(raw.requisitos)\n  ? raw.requisitos\n  : [];\n\nlet pontos = 0;\n\nfor (const requisito of requisitos) {\n\n  const status = String(requisito.status || '')\n    .trim()\n    .toUpperCase();\n\n  if (status === 'ATENDIDO') {\n    pontos += 1;\n  } else if (status === 'PARCIALMENTE_ATENDIDO') {\n    pontos += 0.5;\n  }\n}\n\nconst totalRequisitos = requisitos.length;\n\nconst match = totalRequisitos > 0\n  ? Math.round((pontos / totalRequisitos) * 100)\n  : 0;\n\nreturn {\n  json: {\n    requisitos,\n\n    pontos_fortes:\n      Array.isArray(raw.pontos_fortes)\n        ? raw.pontos_fortes\n        : [],\n\n    lacunas:\n      Array.isArray(raw.lacunas)\n        ? raw.lacunas\n        : [],\n\n    justificativa_resumida:\n      raw.justificativa_resumida || '',\n\n    total_requisitos: totalRequisitos,\n    pontos_obtidos: pontos,\n    match\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        0
+      ],
+      "id": "363781d5-f50b-470b-a8a2-130fde6f57c6",
+      "name": "Calcular Match"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1J2doWBvHxCGhykgFMP_tfdgNVk4P9pc8LvoXZgdK284",
+          "mode": "list",
+          "cachedResultName": "Vagas - Automação n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1J2doWBvHxCGhykgFMP_tfdgNVk4P9pc8LvoXZgdK284/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1J2doWBvHxCGhykgFMP_tfdgNVk4P9pc8LvoXZgdK284/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_email": "={{ $('Adicionar Currículo').item.json.id_email }}",
+            "match": "={{ $json.match }}",
+            "total_requisitos": "={{ $json.total_requisitos }}",
+            "pontos_obtidos": "={{ $json.pontos_obtidos }}",
+            "pontos_fortes": "={{ ($json.pontos_fortes || []).join(' | ') }}",
+            "lacunas": "={{ ($json.lacunas || []).join(' | ') }}",
+            "justificativa": "={{ $json.justificativa_resumida }}",
+            "status": "ANALISADA"
+          },
+          "matchingColumns": [
+            "id_email"
+          ],
+          "schema": [
+            {
+              "id": "id_email",
+              "displayName": "id_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fonte",
+              "displayName": "fonte",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "cargo",
+              "displayName": "cargo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "empresa",
+              "displayName": "empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "localizacao",
+              "displayName": "localizacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "modelo_trabalho",
+              "displayName": "modelo_trabalho",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tipo_contrato",
+              "displayName": "tipo_contrato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "salario",
+              "displayName": "salario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "descrição",
+              "displayName": "descrição",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "assunto_email",
+              "displayName": "assunto_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "remetente",
+              "displayName": "remetente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "match",
+              "displayName": "match",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_coleta",
+              "displayName": "data_coleta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "total_requisitos",
+              "displayName": "total_requisitos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pontos_obtidos",
+              "displayName": "pontos_obtidos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pontos_fortes",
+              "displayName": "pontos_fortes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lacunas",
+              "displayName": "lacunas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "justificativa",
+              "displayName": "justificativa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "38688e01-4679-4f2f-811c-e067fa251899",
+      "name": "Atualizar Análise da Vaga",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "NTEAPvDVEF6KiVeJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "5S1thogI0fzo5qad",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/5S1thogI0fzo5qad",
+          "cachedResultName": "WF03 - Notificação de Vagas"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1552,
+        0
+      ],
+      "id": "7b08be74-ff79-4ad6-b473-737dec8b39b3",
+      "name": "WF03 - Notificação de Vagas"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0a9b550a-64cb-42a5-a0c9-9be67680c861",
+              "name": "=mach",
+              "value": "={{ $('Calcular Match').item.json.match }}",
+              "type": "string"
+            },
+            {
+              "id": "c6635d18-bdc8-4196-a293-d37fb963d616",
+              "name": "cargo",
+              "value": "={{ $('Adicionar Currículo').item.json.cargo }}",
+              "type": "string"
+            },
+            {
+              "id": "9b176700-6b83-4b7a-b3aa-da867162e438",
+              "name": " empresa",
+              "value": "={{ $('Adicionar Currículo').item.json.empresa }}",
+              "type": "string"
+            },
+            {
+              "id": "3ba55f7f-ce95-4537-ae5d-63c23f591817",
+              "name": "link",
+              "value": "={{ $('Adicionar Currículo').item.json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "89403f6d-69d2-4b0a-a69a-534512c0d158",
+              "name": "modelo_trabalho",
+              "value": "={{ $('Adicionar Currículo').item.json.modelo_trabalho }}",
+              "type": "string"
+            },
+            {
+              "id": "7339b0bd-5f04-4cc3-bb35-a2fa761a7849",
+              "name": "salario",
+              "value": "={{ $('Adicionar Currículo').item.json.salario }}",
+              "type": "string"
+            },
+            {
+              "id": "2717f80a-6000-42e4-bcbc-df4edf149718",
+              "name": "pontos_fortes",
+              "value": "={{ $('Calcular Match').item.json.pontos_fortes.join(' | ') }}",
+              "type": "string"
+            },
+            {
+              "id": "241343d7-6d7b-45df-a1a9-a7af7ef4dae4",
+              "name": "lacunas",
+              "value": "={{ $('Calcular Match').item.json.lacunas.join(' | ') }}",
+              "type": "string"
+            },
+            {
+              "id": "3db4655b-91b0-4c34-bc02-d428d6b4bc41",
+              "name": " justificativa",
+              "value": "={{ $('Calcular Match').item.json.justificativa_resumida }}",
+              "type": "string"
+            },
+            {
+              "id": "510a2211-31d6-4e51-a9f1-b52d3ef1c1ec",
+              "name": "id_email",
+              "value": "={{ $('Adicionar Currículo').item.json.id_email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "=all",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1296,
+        0
+      ],
+      "id": "b1ec71d5-6000-49c2-8af5-52d081b6b41f",
+      "name": "Preparar Dados para WF03"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Adicionar Currículo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adicionar Currículo": {
+      "main": [
+        [
+          {
+            "node": "Analisar Vaga x Currículo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analisar Vaga x Currículo",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analisar Vaga x Currículo": {
+      "main": [
+        [
+          {
+            "node": "Calcular Match",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Match": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Análise da Vaga",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Análise da Vaga": {
+      "main": [
+        [
+          {
+            "node": "Preparar Dados para WF03",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Dados para WF03": {
+      "main": [
+        [
+          {
+            "node": "WF03 - Notificação de Vagas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "732c01d0-f828-4884-a08c-c41689cbdae9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "39c46ce4c07757018a1ecb77e8a7a7250b082844027ab0f32c16f8174d82e866"
+  },
+  "nodeGroups": [],
+  "id": "eqBGo3dRfSrHiXgd",
+  "tags": []
+}
